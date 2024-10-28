@@ -1,8 +1,9 @@
-import { useMemo, useRef, useState } from "react";
+import { useContext, useMemo, useRef, useState } from "react";
 import "./App.css";
 import { TodoItem } from "./component/TodoItem";
 import { Sidebar } from "./component/Sidebar";
 import { FilterPanel } from "./component/FilterPanel";
+import { AppContext } from "./context/AppProvider";
 
 function App() {
   // hook useState
@@ -13,6 +14,7 @@ function App() {
       isImportant: false,
       isCompleted: true,
       isDeleted: false,
+      category: "personal",
     },
     {
       id: "2",
@@ -20,6 +22,7 @@ function App() {
       isImportant: true,
       isCompleted: false,
       isDeleted: false,
+      category: "personal",
     },
     {
       id: "3",
@@ -27,6 +30,7 @@ function App() {
       isImportant: false,
       isCompleted: false,
       isDeleted: false,
+      category: "travel",
     },
     {
       id: "4",
@@ -34,13 +38,21 @@ function App() {
       isImportant: false,
       isCompleted: true,
       isDeleted: false,
+      category: "travel",
     },
   ]);
 
-  const [selectedFilterId, setSelectedFilterId] = useState("all");
-  const [activeTodoItemId, setActiveTodoItemId] = useState();
-  const [showSidebar, setShowSidebar] = useState(false);
-  const [searchText, setSearchText] = useState("");
+  const {
+    selectedCategoryId,
+    selectedFilterId,
+    setSelectedFilterId,
+    activeTodoItemId,
+    setActiveTodoItemId,
+    showSidebar,
+    setShowSidebar,
+    searchText,
+    setSearchText,
+  } = useContext(AppContext);
 
   const activeTodoItem = todoList.find((todo) => todo.id === activeTodoItemId);
 
@@ -55,17 +67,10 @@ function App() {
     });
     setTodoList(newTodoList);
   };
-  
+
   const inputRef = useRef();
 
   console.log({ inputRef });
-
-  // const todoList = [
-  //   { id: 1, name: "Đi học thêm" },
-  //   { id: 2, name: "Học bài" },
-  //   { id: 3, name: "Học võ" },
-  //   { id: 4, name: "Đi chợ" },
-  // ];
 
   const handleTodoItemClick = (todoId) => {
     // setShowSidebar(!showSidebar);
@@ -89,6 +94,10 @@ function App() {
         return false;
       }
 
+      if (selectedCategoryId && todo.category !== selectedCategoryId) {
+        return false;
+      }
+
       switch (selectedFilterId) {
         case "all":
           return true;
@@ -102,7 +111,7 @@ function App() {
           return true;
       }
     });
-  }, [todoList, selectedFilterId, searchText]); // todoList or selected change -> re-render
+  }, [todoList, selectedFilterId, searchText, selectedCategoryId]); // todoList or selected change -> re-render
 
   return (
     <div className="container">
@@ -132,6 +141,7 @@ function App() {
                   isCompleted: false,
                   isImportant: false,
                   isDeleted: false,
+                  category: "personal",
                 },
               ]);
               inputRef.current.value = "";

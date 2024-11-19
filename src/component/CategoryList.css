@@ -1,0 +1,10 @@
+.category-item {
+  display: flex;
+  justify-content: space-between;
+}
+
+.category-item.selected {
+  background-color: rgb(48, 58, 206);
+  color: white;
+  cursor: pointer;
+}

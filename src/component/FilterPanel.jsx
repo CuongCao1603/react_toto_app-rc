@@ -1,6 +1,7 @@
  import { useMemo } from "react";
 import "./FilterPanel.css";
 import PropTypes from "prop-types";
+import { CategoryList } from "./CategoryList";
 
 const FILTER_ITEMS = [
   { id: "all", label: "All", iconPath: "./public/inbox.png" },
@@ -17,7 +18,7 @@ export const FilterPanel = ({
   setSearchText,
   todoList,
 }) => {
-  // chuyen array ve object
+  // chuyen array ve object khi su dung reduce
   const countByFilterType = useMemo(() => {
     return todoList.reduce(
       (acc, cur) => {
@@ -34,6 +35,7 @@ export const FilterPanel = ({
 
         return newAcc;
       },
+      // khai bao acc ban dau la ket qua cong don
       {
         all: todoList.length,
         important: 0,
@@ -45,14 +47,6 @@ export const FilterPanel = ({
 
   console.log(countByFilterType);
 
-  /*
-    {
-      'all': 30,
-      'important': 12,
-      'completed':11,
-      'deleted':3
-    }
-  */
   return (
     <div className="filter-panel">
       <input
@@ -82,6 +76,7 @@ export const FilterPanel = ({
           );
         })}
       </div>
+      <CategoryList todoList={todoList} />
     </div>
   );
 };

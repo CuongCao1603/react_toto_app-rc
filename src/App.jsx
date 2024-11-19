@@ -58,7 +58,7 @@ function App() {
   
   const inputRef = useRef();
 
-  console.log({ inputRef });
+  console.log("input ref" ,{ inputRef });
 
   // const todoList = [
   //   { id: 1, name: "Đi học thêm" },
